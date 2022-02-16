@@ -143,8 +143,9 @@ private fun FullScreenLoading() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center).size(50.dp)
+        )
     }
 }

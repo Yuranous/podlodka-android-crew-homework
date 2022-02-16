@@ -98,6 +98,7 @@ class DotaRepository {
     }
 
     suspend fun getWidgets(): List<Widget> = withContext(Dispatchers.IO) {
+        delay(2000)
         listOf(
             Widget.DESCRIPTION,
             Widget.SCREENSHOTS,
