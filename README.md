@@ -5,4 +5,4 @@
 ![screenshot](data/screenshot1.jpg)
 ![screenshot](data/screenshot1.jpg)
 
-![video](data/demo.mp4)
+![](data/demo.mp4)
