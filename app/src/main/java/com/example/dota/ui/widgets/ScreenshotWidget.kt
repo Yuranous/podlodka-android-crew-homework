@@ -2,10 +2,12 @@ package com.example.dota.ui.widgets
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -42,18 +44,18 @@ val screenshotModifier = Modifier
     .clip(RoundedCornerShape(14.dp))
 
 @Composable
-fun ScreenshotWidget(state: ScreenshotWidgetState, modifier: Modifier = Modifier) {
+fun ScreenshotWidget(state: ScreenshotWidgetState) {
     when (state) {
         ScreenshotWidgetLoadingState -> ScreenshotWidgetPlaceholder()
-        is ScreenshotWidgetLoadedState -> ScreenshotWidgetLoaded(state, modifier)
+        is ScreenshotWidgetLoadedState -> ScreenshotWidgetLoaded(state)
     }
 }
 
 @Composable
 fun ScreenshotWidgetPlaceholder() {
     LazyRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         item {
             Spacer(Modifier.width(6.dp))
@@ -72,36 +74,49 @@ fun ScreenshotWidgetPlaceholder() {
 }
 
 @Composable
-fun ScreenshotWidgetLoaded(state: ScreenshotWidgetLoadedState, modifier: Modifier = Modifier) {
+fun ScreenshotWidgetLoaded(state: ScreenshotWidgetLoadedState) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         item {
             Spacer(Modifier.width(6.dp))
         }
+
         items(state.screenshots) { screenshot ->
-            Box() {
-                Image(
-                    modifier = screenshotModifier,
-                    painter = painterResource(id = screenshot.res),
-                    contentDescription = "Game Screenshot",
-                    contentScale = ContentScale.Crop,
-                )
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_play),
-                    contentDescription = "Play Button",
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .align(Alignment.Center)
-                        .clickable { }
-
-                )
-            }
+            ScreenshotWidgetItem(screenshot)
         }
     }
+}
+
+@Composable
+fun ScreenshotWidgetItem(state: Screenshot) {
+    Box {
+        Image(
+            modifier = screenshotModifier,
+            painter = painterResource(id = state.res),
+            contentDescription = "Game Screenshot",
+            contentScale = ContentScale.Crop,
+        )
+        PlayButton(Modifier.align(Alignment.Center))
+    }
+}
+
+@Composable
+fun PlayButton(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(Color.White.copy(alpha = 0.24f))
+            .size(48.dp)
+            .clickable { }
+    )
+    Icon(
+        painter = painterResource(id = R.drawable.ic_arrow),
+        contentDescription = "Play Button",
+        tint = Color.White,
+        modifier = modifier
+    )
 }
 
 @Preview
